@@ -6,7 +6,6 @@ import joblib
 from langchain.vectorstores import FAISS
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_nvidia_ai_endpoints import ChatNVIDIA, NVIDIAEmbeddings
 
 
 # Handle API key
@@ -16,7 +15,7 @@ except:
     GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "")
 
 
-from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
+from langchain_google_genai import ChatGoogleGenerativeAI
 llm = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=GOOGLE_API_KEY)
 
 st.subheader("Chat with your AI Assistant, Interview Bot!")

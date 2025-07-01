@@ -6,4 +6,4 @@ langchain-text-splitters==0.3.5
 faiss-cpu==1.9.0.post1
 streamlit==1.41.1
 joblib==1.4.2
-google-generativeai==0.7.2
+google-generativeai==0.8.0

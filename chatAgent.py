@@ -3,6 +3,7 @@ import pandas as pd
 import os
 import pickle
 import joblib
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
 # Handle API key
 try:
@@ -24,7 +25,7 @@ def init_gemini():
     try:
         import google.generativeai as genai
         genai.configure(api_key=GOOGLE_API_KEY)
-        model = genai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel('gemini-2.5-flash')
         # Test it
         test_response = model.generate_content("Hello")
         return model
@@ -45,8 +46,8 @@ vector_store_path = "vectorstore.pkl"
 @st.cache_resource
 def load_vector_store():
     try:
-        with open(vector_store_path, "rb") as f:
-            vectorstore = pd.read_pickle(f)
+        embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key=GOOGLE_API_KEY)
+        vectorstore = FAISS.load_local("vectorstore_faiss", embeddings, allow_dangerous_deserialization=True)
         return vectorstore, "✅ Vector store loaded successfully!"
     except FileNotFoundError:
         return None, "⚠️ No vector store found. Please run vector_store.py first to create one."
@@ -73,7 +74,7 @@ def search_vectorstore(query, vectorstore, k=3):
 def chat_with_gemini(user_input, context=""):
     try:
         if context:
-            prompt = f"""You are a helpful AI assistant named Interview Bot. Answer the user's question based on the provided context from documents.
+            prompt = f"""Your purpose is to answer questions about Youssef. To help other to get to know him
 
 Context from documents:
 {context}

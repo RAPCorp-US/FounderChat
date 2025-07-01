@@ -7,11 +7,7 @@ import streamlit as st
 import pickle
 import os
 
-# Handle API key properly
-try:
-    GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
-except:
-    GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "")
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "")
 
 if not GOOGLE_API_KEY:
     st.error("❌ Please set your GOOGLE_API_KEY in Streamlit secrets")
@@ -157,8 +153,8 @@ if st.button("🚀 Process Documents", type="primary"):
                     
                     # Save vector store
                     with st.spinner("💾 Saving vector store..."):
-                        with open(vector_store_path, "wb") as f:
-                            pickle.dump(vectorstore, f)
+                        vectorstore.save_local("vectorstore_faiss")
+                        st.success("✅ Vector store saved as vectorstore_faiss folder")
                     
                     st.success("🎉 Vector store created and saved successfully!")
                     st.info(f"📈 Vector store contains {len(documents)} document chunks")

@@ -5,6 +5,7 @@ import pickle
 import joblib
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_community.vectorstores import FAISS
+import langchain.docstore.document as docstore_document
 
 # Handle API key
 try:
@@ -41,11 +42,12 @@ if not gemini_model:
 
 st.subheader("Chat with your AI Assistant, Interview Bot!")
 
-# Load vector store (created by LangChain in vector_store.py)
-vector_store_path = "vectorstore.pkl"
-
 @st.cache_resource
 def load_vector_store():
+    # This patch is a temporary workaround for the loading error.
+    # It should be removed once the vector store is recreated.
+    docstore_document.Document.__slots__ = list(docstore_document.Document.__slots__) + ['__fields_set__']
+    
     try:
         embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key=GOOGLE_API_KEY)
         vectorstore = FAISS.load_local("vectorstore_faiss", embeddings, allow_dangerous_deserialization=True)

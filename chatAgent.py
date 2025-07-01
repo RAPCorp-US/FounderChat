@@ -4,6 +4,7 @@ import os
 import pickle
 import joblib
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
+import FAISS
 
 # Handle API key
 try:

@@ -6,7 +6,6 @@ import joblib
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_community.vectorstores import FAISS
 import langchain.docstore.document as docstore_document
-import langchain.docstore.document as docstore_document
 
 # This patch is a temporary workaround for the loading error.
 # It should be removed once the vector store is recreated.
